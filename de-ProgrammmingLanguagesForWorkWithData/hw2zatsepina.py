@@ -5,7 +5,6 @@ def task_01():
     c = [1, 3, 1, 5, 3, 3]
     a.extend(b)
     print(a.count(5))
-    # a = list(filter(lambda x: x != 5, a))
     a = list(x for x in a if x != 5)
     a.extend(c)
     print(a.count(3))
@@ -158,19 +157,19 @@ def task_10():
             right -= 1
         else:
             left += 1
-            add_list = [i for i in n_list[0:left]]
+            add_list = list(reversed([i for i in n_list[0:left]]))
     print("Последовательность: ", n_list)
     print("Нужно приписать чисел: ", len(add_list))
     print("Сами числа: ", add_list)
 
 
-task_01()
-task_02()
-task_03()
-task_04()
-task_05()
-task_06()
-task_07()
-task_08()
-task_09()
-task_10()
+# task_01()
+# task_02()
+# task_03()
+# task_04()
+# task_05()
+# task_06()
+# task_07()
+# task_08()
+# task_09()
+# task_10()
