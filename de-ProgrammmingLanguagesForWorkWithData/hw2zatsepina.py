@@ -129,15 +129,48 @@ def task_08():
 
 
 def task_09():
-    a = 1
+    n_friends = int(input("Кол-во друзей: "))
+    n_docs = int(input("Долговых расписок: "))
+    friends_dict = {i + 1: 0 for i in range(n_friends)}
+    for n in range(1, n_docs + 1):
+        print(f"\n{n}-я расписка")
+        friend_to = int(input("Кому: "))
+        friend_from = int(input("От кого: "))
+        how_much = int(input("Сколько: "))
+        friends_dict[friend_to] -= how_much
+        friends_dict[friend_from] += how_much
+    print("\nБаланс друзей:")
+    for key, value in friends_dict.items():
+        print(key, ':', value)
 
 
-# task_01()
-# task_02()
-# task_03()
-# task_04()
-# task_05()
-# task_06()
-# task_07()
-# task_08()
-task_09()  # task_10()
+def task_10():
+    n_nums = int(input("Кол-во чисел: "))
+    n_list = list()
+    add_list = ()
+    for n in range(n_nums):
+        n_list.append(int(input("Число: ")))
+    left = 0
+    right = n_nums - 1
+    while left < right:
+        if n_list[left] == n_list[right]:
+            left += 1
+            right -= 1
+        else:
+            left += 1
+            add_list = [i for i in n_list[0:left]]
+    print("Последовательность: ", n_list)
+    print("Нужно приписать чисел: ", len(add_list))
+    print("Сами числа: ", add_list)
+
+
+task_01()
+task_02()
+task_03()
+task_04()
+task_05()
+task_06()
+task_07()
+task_08()
+task_09()
+task_10()
