@@ -1,4 +1,10 @@
-""" точки и прямоугольники """
+"""
+*
+*
+№1,2,3 точки и прямоугольники
+*
+*
+"""
 
 
 class Point:
@@ -25,7 +31,13 @@ print(rectangle1.P, rectangle1.S)
 c = Point(3, 2)
 print(rectangle1.contains(c))
 
-""" счетчик """
+""" 
+*
+*
+№4 счетчик 
+*
+*
+"""
 
 
 class DecimalCounter:
@@ -52,7 +64,13 @@ print(i.get_current())
 i.decrement(13)
 print(i.get_current())
 
-""" часы """
+""" 
+*
+*
+№5,6 часы 
+*
+*
+"""
 
 
 class Clock:
@@ -104,7 +122,13 @@ t2 = Clock(23, 34, 35)
 t3 = t1 + t2
 print(f"{t1.current_time} + {t2.current_time} = {t3}")
 
-""" трава и травоядные """
+""" 
+*
+*
+№7 трава и травоядные 
+*
+*
+"""
 
 
 class Grass:
@@ -154,7 +178,13 @@ burenka.feeding(spinach)
 burenka.activity(50)
 burenka.feeding(mint)
 
-""" перемешиваем элементы """
+""" 
+*
+*
+№8 перемешиваем элементы 
+*
+*
+"""
 
 
 class Water:
@@ -235,7 +265,13 @@ element3 = element1 + element2
 
 print(f"{element1.element} + {element2.element} = {element3.element}")
 
-""" исключения """
+""" 
+*
+*
+№9 исключения 
+*
+*
+"""
 
 
 class NoMoneyToWithdrawError(Exception):
@@ -279,11 +315,11 @@ def transfer_money(accounts, account_from, account_to, value):
     """
     account_from_value = accounts.get(account_from)
     if account_from_value is None:
-        raise NoAccountError("Отсутствует акканут: ", account_from)
+        raise NoAccountError(f"Отсутствует акканут: {account_from}")
 
     account_to_value = accounts.get(account_to)
     if account_to_value is None:
-        raise NoAccountError("Отсутствует акканут: ", account_to)
+        raise NoAccountError(f"Отсутствует акканут: {account_to}")
 
     if account_from_value < value:
         raise NoMoneyToWithdrawError(f"На аккаунте {account_from} недостаточно средств для "
@@ -315,62 +351,96 @@ if __name__ == "__main__":
     except ValueError:
         print("Сумма перевода введена неверно")
 
-# """ исключние для нечисловых значений """
-# def sum_of_nums(number_of_inputs: int) -> float:
-#     total = float(0.0)
-#     for _ in range(number_of_inputs):
-#         try:
-#             num = float(input("введите число: "))
-#             total += num
-#             print(f"текущая сумма: {total}")
-#         except ValueError:
-#             print("введено неподходящее значение")
-#     return total
-#
-#
-# # sum_of_nums(4)
+""" 
+*
+*
+№10 исключние для нечисловых значений 
+*
+*
+"""
 
 
-# """ переводы оценок """
-# def marks_converter():
-#     marks_amount = int(input("Сколько оценок введете? "))
-#     print("Вводите: ")
-#     marks = [input() for _ in range(marks_amount)]
-#     marks_converted = []
-#
-#     def numeric_to_letter(numeric):
-#         numeric = int(numeric)
-#         if 1 < numeric < 6:
-#             if numeric == 2: return "F"
-#             elif numeric == 3: return "D or E"
-#             elif numeric == 4: return "B or C"
-#             else: return "A"
-#         else:
-#             if numeric < 60: return "F"
-#             elif numeric < 68: return "E"
-#             elif numeric < 74: return "D"
-#             elif numeric < 84: return "C"
-#             elif numeric < 91: return "B"
-#             else: return "A"
-#
-#     def letter_to_numeric(letter: str):
-#         if letter == "A": return 5
-#         elif letter == "B": return 4
-#         elif letter == "C": return 4
-#         elif letter == "D": return 3
-#         elif letter == "E": return 3
-#         elif letter == "F": return 3
-#         else: return f"Значение {mark} не является допустимым"
-#
-#     for mark in marks:
-#         try:
-#             marks_converted.append(numeric_to_letter(mark))
-#         except Exception:
-#             try: marks_converted.append(letter_to_numeric(mark))
-#             except Exception:
-#                 print(f"Значение {mark} не является допустимым")
-#     for i in range(len(marks)):
-#         print(f"{marks[i]} -> {marks_converted[i]}")
-#
-#
-# marks_converter()
+def sum_of_nums(number_of_inputs: int) -> float:
+    total = float(0.0)
+    for _ in range(number_of_inputs):
+        try:
+            num = float(input("введите число: "))
+            total += num
+            print(f"текущая сумма: {total}")
+        except ValueError:
+            print("введено неподходящее значение")
+    return total
+
+
+# sum_of_nums(4)
+
+
+""" 
+*
+*
+№11 переводы оценок 
+*
+*
+"""
+
+
+def marks_converter():
+    marks_amount = int(input("Сколько оценок введете? "))
+    print("Вводите: ")
+    marks = [input() for _ in range(marks_amount)]
+    marks_converted = []
+
+    def numeric_to_letter(numeric):
+        numeric = int(numeric)
+        if 1 < numeric < 6:
+            if numeric == 2:
+                return "F"
+            elif numeric == 3:
+                return "D or E"
+            elif numeric == 4:
+                return "B or C"
+            else:
+                return "A"
+        else:
+            if numeric < 60:
+                return "F"
+            elif numeric < 68:
+                return "E"
+            elif numeric < 74:
+                return "D"
+            elif numeric < 84:
+                return "C"
+            elif numeric < 91:
+                return "B"
+            else:
+                return "A"
+
+    def letter_to_numeric(letter: str):
+        if letter == "A":
+            return 5
+        elif letter == "B":
+            return 4
+        elif letter == "C":
+            return 4
+        elif letter == "D":
+            return 3
+        elif letter == "E":
+            return 3
+        elif letter == "F":
+            return 3
+        else:
+            return f"Значение {mark} не является допустимым"
+
+    for mark in marks:
+        try:
+            marks_converted.append(numeric_to_letter(mark))
+        except Exception:
+            try:
+                marks_converted.append(letter_to_numeric(mark))
+            except Exception:
+                print(f"Значение {mark} не является допустимым")
+    for i in range(len(marks)):
+        print(f"{marks[i]} -> {marks_converted[i]}")
+
+
+marks_converter()
