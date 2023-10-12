@@ -37,10 +37,12 @@ def amount_of_sentences_with_digits(text: str) -> int:
     return amount
 
 
-def draw_k_frame(s: str):
+def draw_k_frame(s: str): 
     print("-" * (len(s) + 2))
     print(s.center(len(s) + 2, "|"))
     print("-" * (len(s) + 2))
+    # todo все работает, только ты не подаешь по условию задачи символ k в параметрах
+    # чтобы именно этот символ рисовал рамку
 
 
 def letter_statistics(s: str):
@@ -51,10 +53,10 @@ def letter_statistics(s: str):
         print(f"{keys}: {values}")
 
 
-def caesar_cipher(s: str) -> str:
+def caesar_cipher(s: str) -> str: # todo нет дешифровщика
     alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
     encrypted_s = ""
-    shift = 1
+    shift = 1 # todo добавил бы в аргумент метода, чтобы контролировать насколько хочу сместить
     s = s.upper()
     for letter in s:
         if letter in alphabet:
@@ -88,14 +90,33 @@ def palindrome_or_not(s: str) -> bool:
             else:
                 palindrome_bool = True
                 return palindrome_bool
+# todo все отлично работает, но как мне кажется чуть громоздко,
+# нужно разбирать зачем нужен counter при первом взгляде на код, примеры ниже более кратки
+#      def is_palindrome(a: str):
+#          palindrome_bool = False
+#          for i in range(0, (len(a) // 2)):
+#             if a[i] == a[len(a) - i - 1]:
+#                 palindrome_bool = True
+#              else:
+#                  return False
+#         return flag
+#  или так
+#     def is_palindrome(a: str):
+#         flag = False
+#         for i in range(1, (len(a) // 2) + 1):
+#             if a[i - 1] == a[-i]:
+#                 flag = True
+#             else:
+#                 return False
+#         return flag
 
 
 def number_search() -> int:
     range_of_nums = [x for x in range(1, 101)]
     left_pointer = 0
     right_pointer = len(range_of_nums)
-    middle = (left_pointer + right_pointer) // 2
-    answer = 0
+    middle = (left_pointer + right_pointer) // 2   #todo можно один раз объявить в цикле, что не писать многократно
+    answer = 0                                     #todo не используется переменная, она не нужна за пределами цикла
     print(f'''
         Вы загадываете число от 1 до 100 (включительно). Компьютер спрашивает у вас 
         «Твое число равно, меньше или больше, чем число N?»,  
@@ -188,7 +209,7 @@ def from_8_to_10(number):
     return decimal_number
 
 
-def convert_systems():
+def convert_systems():                                            #todo не поодерживает все системы счисления от 2 до 16
     system_from = int(input("из какой системы? (числом 2/8/10/16) "))
     system_to = int(input("в какую систему? (числом 2/8/10/16) "))
     number = str(input("значение: "))
