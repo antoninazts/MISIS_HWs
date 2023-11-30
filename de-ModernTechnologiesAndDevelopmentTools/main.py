@@ -1,68 +1,88 @@
-from tkinter import *
-from random import randint
+import random
+import curses
+from curses import textpad
 
 
-class Game:
-    # Инициализация
-    def __init__(self, canvas):
-        self.canvas = canvas
-        self.snake_coords = [[14, 14]]
-        self.apple_coords = [randint(0, 29) for i in range(2)]
-        self.vector = {"Up": (0, -1), "Down": (0, 1), "Left": (-1, 0), "Right": (1, 0)}
-        self.direction = self.vector["Right"]
-        self.canvas.focus_set()
-        self.canvas.bind("<KeyPress>", self.set_direction)
-        self.GAME()
+def create_food(snake, box):
+    food = None
 
-    # Метод для нового положения "Яблока"
-    def set_apple(self):
-        self.apple_coords = [randint(0, 29) for i in range(2)]
-        # Условие, для того чтобы яблоко не лежало на змейке
-        if self.apple_coords in self.snake_coords:
-            self.set_apple()
+    while food is None:
+        food = [random.randint(box[0][0] + 1, box[1][0] - 1),
+                random.randint(box[0][1] + 1, box[1][1] - 1)]
 
-    # Установка нового направления змейки
-    def set_direction(self, event):
-        # Условие, которое проверяет нажатие кнопки
-        if event.keysym in self.vector:
-            self.direction = self.vector[event.keysym]
+        if food in snake:
+            food = None
 
-    # Отрисовка игры
-    def draw(self):
-        self.canvas.delete(ALL)
-        x_apple, y_apple = self.apple_coords
-        self.canvas.create_rectangle(x_apple * 10, y_apple * 10, (x_apple + 1) * 10,
-                                     (y_apple + 1) * 10, fill="red", width=0)
-        for x, y in self.snake_coords:
-            self.canvas.create_rectangle(x * 10, y * 10, (x + 1) * 10, (y + 1) * 10, fill="green",
-                                         width=0)
+    return food
 
-    # Метод, который возращает координаты на интервале [0, 29]
-    @staticmethod
-    def coord_check(coord):
-        return 0 if coord > 29 else 29 if coord < 0 else coord
 
-    # Алгоритм "Оторванный Хвост\Логика игры"
-    def GAME(self):
-        self.draw()
-        x, y = self.snake_coords[0]
-        x += self.direction[0];
-        y += self.direction[1]
-        x = self.coord_check(x)
-        y = self.coord_check(y)
-        if x == self.apple_coords[0] and y == self.apple_coords[1]:
-            self.set_apple()
-        elif [x, y] in self.snake_coords:
-            self.snake_coords = []
+def print_score(stdscr, score):
+    sh, sw = stdscr.getmaxyx()
+    score_text = "Score: {}".format(score)
+    stdscr.addstr(0, sw // 2 - len(score_text) // 2, score_text)
+    stdscr.refresh()
+
+
+def main(stdscr):
+    curses.curs_set(0)
+    stdscr.nodelay(1)
+    stdscr.timeout(150)
+
+    sh, sw = stdscr.getmaxyx()
+    box = [[3, 3], [sh - 3, sw - 3]]
+    textpad.rectangle(stdscr, box[0][0], box[0][1], box[1][0], box[1][1])
+
+    snake = [[sh // 2, sw // 2 + 1], [sh // 2, sw // 2], [sh // 2, sw // 2 - 1]]
+    direction = curses.KEY_RIGHT
+
+    for y, x in snake:
+        stdscr.addstr(y, x, 'o')
+
+    food = create_food(snake, box)
+    stdscr.addstr(food[0], food[1], '*')
+
+    score = 0
+    print_score(stdscr, score)
+
+    while 1:
+
+        key = stdscr.getch()
+
+        if key in [curses.KEY_RIGHT, curses.KEY_LEFT, curses.KEY_UP, curses.KEY_DOWN]:
+            direction = key
+
+        head = snake[0]
+
+        if direction == curses.KEY_RIGHT:
+            new_head = [head[0], head[1] + 1]
+        elif direction == curses.KEY_LEFT:
+            new_head = [head[0], head[1] - 1]
+        elif direction == curses.KEY_UP:
+            new_head = [head[0] - 1, head[1]]
+        elif direction == curses.KEY_DOWN:
+            new_head = [head[0] + 1, head[1]]
+
+        snake.insert(0, new_head)
+        stdscr.addstr(new_head[0], new_head[1], 'o')
+
+        if snake[0] == food:
+            food = create_food(snake, box)
+            stdscr.addstr(food[0], food[1], '*')
+            score += 1
+            print_score(stdscr, score)
         else:
-            self.snake_coords.pop()
-        self.snake_coords.insert(0, [x, y])
-        self.canvas.after(100, self.GAME)
+            stdscr.addstr(snake[-1][0], snake[-1][1], ' ')
+            snake.pop()
+
+        if (snake[0][0] in [box[0][0], box[1][0]] or snake[0][1] in [box[0][1], box[1][1]] or snake[
+            0] in snake[1:]):
+            msg = "GAME OVER"
+            stdscr.addstr(sh // 2, sw // 2 - len(msg) // 2, msg)
+            stdscr.nodelay(0)
+            stdscr.getch()
+            break
+
+        stdscr.refresh()
 
 
-# Каркас игры
-root = Tk()
-canvas = Canvas(root, width=300, height=300, bg="black")
-canvas.pack()
-game = Game(canvas)
-root.mainloop()
+curses.wrapper(main)
